@@ -18,7 +18,7 @@ struct Entry {
     int book_pub_year;
 } book[array_size], deleted[array_size];
 
-int book_nr=0;
+int nr_books=0;
 int books_deleted=0;
 
 
@@ -48,6 +48,7 @@ int main() {
         break;
 
         case 'U':
+        undelete_entry();
         break;
 
         case 'P':
@@ -80,14 +81,14 @@ void insert_record(){
     cin >> n;
     for (int i=0; i<n; i++) {
         cout << "Enter book ISBN ";
-        cin >> book[book_nr].book_ISBN;
+        cin >> book[nr_books].book_ISBN;
         cout << "Enter book title ";
-        cin >> book[book_nr].book_title;
+        cin >> book[nr_books].book_title;
         cout << "Enter name of the author ";
-        cin >> book[book_nr].book_author;
+        cin >> book[nr_books].book_author;
         cout << "Enter publication year ";
-        cin >> book[book_nr].book_pub_year;
-        book_nr++;
+        cin >> book[nr_books].book_pub_year;
+        nr_books++;
      }
      cout <<"Record updated!!"<<endl;
 
@@ -99,24 +100,21 @@ void delete_entry(){
     int search_word;
     cout <<"\nEnter ISBN code: ";
     cin >>search_word;
-    for (int i=0; i<book_nr;i++){
+    for (int i=0; i<nr_books;i++){
         if(search_word==book[i].book_ISBN){
             //copy record to deleted struct member
-            deleted[book_nr].book_ISBN = book[i].book_ISBN;
-            deleted[book_nr].book_title = book[i].book_title;
-            deleted[book_nr].book_author = book[i].book_author;
-            deleted[book_nr].book_pub_year = book[i].book_pub_year;
+            deleted[books_deleted] = book[i];
             // empty book Entry
-
-            for (int j=i;j<book_nr-1;j++) {
+            for (int j=i;j<nr_books-1;j++) {
                 book[j].book_ISBN = book[j+1].book_ISBN;
                 book[j].book_title = book[j+1].book_title;
                 book[j].book_author= book[j+1].book_author;
                 book[j].book_pub_year = book[j+1].book_pub_year;
             }
-            book_nr--;
+            nr_books--;
             books_deleted++;
             cout<<"\nRecord deleted!"<<endl;
+            
         }
 
         else {
@@ -133,13 +131,10 @@ void undelete_entry(){
     cin >>search_word;
     for (int i=0; i<books_deleted;i++){
         if(search_word==deleted[i].book_ISBN){
-            book[book_nr].book_ISBN = deleted[i].book_ISBN;
-            book[book_nr].book_title = deleted[i].book_title;
-            book[book_nr].book_author = deleted[i].book_author;
-            book[book_nr].book_pub_year = deleted[i].book_pub_year;
+            book[nr_books] = deleted[i];
             // empty deleted Entry
 
-            for (int j=i;j<book_nr-1;j++) {
+            for (int j=i;j<nr_books-1;j++) {
                 deleted[j].book_ISBN = deleted[j+1].book_ISBN;
                 deleted[j].book_title = deleted[j+1].book_title;
                 deleted[j].book_author= deleted[j+1].book_author;
@@ -147,7 +142,7 @@ void undelete_entry(){
             }
 
             books_deleted--;
-            book_nr++;
+            nr_books++;
 
             cout<<"Record restored!"<<endl;
         }
@@ -162,8 +157,8 @@ void undelete_entry(){
 //function to print records
 
 void print_record(){
-    cout<<"\n There are "<< book_nr <<" books on record"<<endl;
-    for (int i=0; i<book_nr;i++){
+    cout<<"\n There are "<< nr_books <<" books on record"<<endl;
+    for (int i=0; i<nr_books;i++){
     cout <<"*********************************"<<endl;
     cout <<"\nBook ISBN: "<<book[i].book_ISBN<<endl;
     cout <<"\nBook title: "<< book[i].book_title<<endl;
@@ -179,7 +174,7 @@ void search_by_ISBN(){
     int search_word;
     cout <<"\nEnter ISBN code: ";
     cin >>search_word;
-    for (int i=0; i<book_nr;i++){
+    for (int i=0; i<nr_books;i++){
 
         if(search_word==book[i].book_ISBN){
                 cout <<"\nBook ISBN: "<<book[i].book_ISBN<<endl;
