@@ -82,15 +82,17 @@ void insert_record(){
     for (int i=0; i<n; i++) {
         cout << "Enter book ISBN ";
         cin >> book[nr_books].book_ISBN;
+        cin.ignore();
         cout << "Enter book title ";
-        cin >> book[nr_books].book_title;
+        getline(cin, book[nr_books].book_title,'\n');
         cout << "Enter name of the author ";
-        cin >> book[nr_books].book_author;
+        getline(cin, book[nr_books].book_author,'\n');
         cout << "Enter publication year ";
         cin >> book[nr_books].book_pub_year;
+
         nr_books++;
      }
-     cout <<"Record updated!!"<<endl;
+     cout <<"Record updated!"<<endl;
 
 }
 
@@ -147,11 +149,11 @@ void undelete_entry(){
             cout<<"Record restored!"<<endl;
         }
 
-        else {
-            cout <<"No record was found!"<<endl;
+        else if(i==nr_books && (deleted[i].book_ISBN != search_word)){
+                cout <<"\nNo record found!"<<endl;
+                }
         }
     }
-}
 
 
 //function to print records
@@ -177,14 +179,15 @@ void search_by_ISBN(){
     for (int i=0; i<nr_books;i++){
 
         if(search_word==book[i].book_ISBN){
+                cout <<"\nRecord found!"<<endl;
                 cout <<"\nBook ISBN: "<<book[i].book_ISBN<<endl;
                 cout <<"\nBook title: "<< book[i].book_title<<endl;
                 cout <<"\nBook Author: "<< book[i].book_author<<endl;
                 cout <<"\nBook Publication year: "<< book[i].book_pub_year<<endl;
         }
-         else {
-                cout <<"No record found!"<<endl;
+         else if(i==nr_books && (book[i].book_ISBN != search_word)){
+                cout <<"\nNo record found!"<<endl;
+                }
         }
 
     }
-}
